@@ -9,7 +9,6 @@ const addUser = async (
   Address,
   Phone,
   Email,
-  Password
 ) => {
   const UserRef = db.collection("User").doc();
 
@@ -22,7 +21,6 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    Password: Password,
   });
 };
 

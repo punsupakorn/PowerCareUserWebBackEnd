@@ -1,14 +1,20 @@
 const db = require("../config/firebase-config");
 
-///// get timetable /////
-const AddTimeTable = () =>{
-    const TimeSlotArr = [08.30-9.00,]
-    const TimeTableRef = db.collection("TimeTable").doc().set({
+///// read /////
+const getTimeTable = async () => {
+  try {
+    const timeTable = db.collection("TimeTable");
+    const snapshotTimeTable = await timeTable.get();
+    const arr = [];
 
-    })
-}
-// const getTimeTable = () => {
-    
-// };
+    await snapshotTimeTable.forEach((doc) => {
+      arr.push(doc.data());
+    });
 
-module.exports = getTimeTable;
+    return arr;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getTimeTable };

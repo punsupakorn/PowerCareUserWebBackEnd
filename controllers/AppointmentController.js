@@ -1,4 +1,6 @@
+const { getTimeTable } = require("../models/TimeTableModel");
 const { addAppointment } = require("../models/AppointmentModel");
+module.exports = { getTimeTable, addAppointment };
 
 const createAppointment = async (req, res) => {
   try {

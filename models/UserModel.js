@@ -15,7 +15,9 @@ const addUser = async (
   const UserRef = db.collection("User").doc();
   const profile = await axios.get(
     `https://api.line.me/v2/profile`, {
-    headers: { Authorization: `Bearer ${accessToken}` }
+    headers: { "Content-Type": "application/json",
+      'Authorization': `Bearer ${accessToken}`,
+  }
  });
   await db.collection("User").doc(UserRef.id).set({
     UserID: UserRef.id,
@@ -26,7 +28,7 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    LineUserId: profile.UserId
+    LineUserId: profile.data.userId
   });
 };
 

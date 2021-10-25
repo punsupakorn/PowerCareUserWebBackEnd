@@ -28,8 +28,7 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    LineUserId: profile.data.userId
-
+    LineUserId: profile.data.userId,
   });
 };
 
@@ -41,13 +40,15 @@ const checkUser = async (accessToken) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  const userRef = db.collection("User");
-  const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
-  if (!query.empty) {
-    return true;
-  } else {
-    return false;
-  }
+  console.log("uid : ", uid);
+
+  // const userRef = db.collection("User");
+  // const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
+  // if (!query.empty) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 };
 
 /////update/////

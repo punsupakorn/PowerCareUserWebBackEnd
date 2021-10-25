@@ -1,5 +1,5 @@
 const db = require("../config/firebase-config");
-const jwt = require('jsonwebtoken');
+const axios = require("axios")
 
 /////create/////
 const addUser = async (
@@ -10,11 +10,13 @@ const addUser = async (
   Address,
   Phone,
   Email,
-  idToken,
+  accessToken,
 ) => {
   const UserRef = db.collection("User").doc();
-  const decoded = jwt.decode(idToken);
-  const LineId = decoded.sub;
+  const profile = await axios.get(
+    `https://api.line.me/v2/profile`, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+ });
   await db.collection("User").doc(UserRef.id).set({
     UserID: UserRef.id,
     FirstName: FirstName,
@@ -24,7 +26,7 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    LineUserId: LineId
+    LineUserId: profile.UserId
   });
 };
 

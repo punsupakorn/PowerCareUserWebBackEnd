@@ -1,5 +1,5 @@
 const db = require("../config/firebase-config");
-const axios = require("axios")
+const axios = require("axios");
 
 /////create/////
 const addUser = async (
@@ -10,15 +10,15 @@ const addUser = async (
   Address,
   Phone,
   Email,
-  accessToken,
+  accessToken
 ) => {
   const UserRef = db.collection("User").doc();
-  const profile = await axios.get(
-    `https://api.line.me/v2/profile`, {
-    headers: { "Content-Type": "application/json",
-      'Authorization': `Bearer ${accessToken}`,
-  }
- });
+  const profile = await axios.get(`https://api.line.me/v2/profile`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   await db.collection("User").doc(UserRef.id).set({
     UserID: UserRef.id,
     FirstName: FirstName,
@@ -28,15 +28,29 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    LineUserId: profile.data.userId
+    LineUserId: profile.data.userId,
   });
 };
 
 /////read/////
+const checkUser = async (accessToken) => {
+  const uid = await axios.get(`https://api.line.me/v2/profile`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const userRef = db.collection("User");
+  const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
+  if (!query.empty) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 /////update/////
 
 /////delete/////
 
-
-module.exports = {addUser} ;
+module.exports = { addUser, checkUser };

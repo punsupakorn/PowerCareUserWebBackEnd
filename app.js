@@ -3,10 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var cors = require("cors")
+var cors = require("cors");
 
 var userProfileRouter = require("./routes/UserProfileRoute");
 var appointmentRouter = require("./routes/AppointmentRoute");
+var loginRouter = require("./routes/LoginRoute");
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/UserProfile", userProfileRouter);
 app.use("/Appointment", appointmentRouter);
+app.use("/Login", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

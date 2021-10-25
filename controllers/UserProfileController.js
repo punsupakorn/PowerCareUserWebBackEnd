@@ -1,4 +1,4 @@
-const { addUser } = require("../models/UserModel");
+const { addUser, checkUser } = require("../models/UserModel");
 
 const createUser = async (req, res) => {
   try {
@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       Address,
       Phone,
       Email,
-      accessToken,
+      accessToken
     );
     res.status(200).send("add user success!");
   } catch (error) {
@@ -28,4 +28,4 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser };
+module.exports = { createUser, checkUser };

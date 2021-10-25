@@ -33,22 +33,27 @@ const addUser = async (
 };
 
 /////read/////
-const checkUser = async (accessToken) => {
+const decryptAccessToken = async (accessToken) => {
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  console.log("uid : ", uid);
+  // console.log("uid : ", uid.data.userId);
+  const id = uid.data.userId;
+  return id;
+};
 
-  // const userRef = db.collection("User");
-  // const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
-  // if (!query.empty) {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
+const checkUser = async (accessToken) => {
+  const data = await decryptAccessToken(accessToken);
+  const userRef = db.collection("User");
+  const query = await userRef.where("LineUserId", "==", data).get();
+  if (query.empty) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 /////update/////

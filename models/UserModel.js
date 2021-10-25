@@ -28,7 +28,8 @@ const addUser = async (
     Address: Address,
     Phone: Phone,
     Email: Email,
-    LineUserId: profile.data.userId,
+    LineUserId: profile.data.userId
+
   });
 };
 

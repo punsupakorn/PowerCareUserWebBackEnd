@@ -9,6 +9,7 @@ const createUser = async (req, res) => {
     const Address = req.body.Address;
     const Phone = req.body.Phone;
     const Email = req.body.Email;
+    const idToken = req.body.idToken;
 
     await addUser(
       FirstName,
@@ -18,6 +19,7 @@ const createUser = async (req, res) => {
       Address,
       Phone,
       Email,
+      idToken,
     );
     res.status(200).send("add user success!");
   } catch (error) {

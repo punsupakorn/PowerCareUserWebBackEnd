@@ -1,13 +1,12 @@
-const { getTimeTable } = require("../models/TimeTableModel");
+const {
+  getDateInTimeTable,
+  getDoctorInChooseDate,
+  getTimeSlot,
+} = require("../models/TimeTableModel");
 const { addAppointment } = require("../models/AppointmentModel");
 
-const createAppointment = async (req, res) => {
+const createAppointment = async (UserID, DoctorName, Symptom, Date, Time) => {
   try {
-    const UserID = req.body.UserID;
-    const DoctorName = req.body.DoctorName;
-    const Symptom = req.body.Symptom;
-    const Date = req.body.Date;
-    const Time = req.body.Time;
     await addAppointment(UserID, DoctorName, Symptom, Date, Time);
     res.status(200).send("created appointment !");
   } catch (error) {
@@ -16,4 +15,9 @@ const createAppointment = async (req, res) => {
   }
 };
 
-module.exports = { createAppointment, getTimeTable };
+module.exports = {
+  createAppointment,
+  getDateInTimeTable,
+  getDoctorInChooseDate,
+  getTimeSlot,
+};

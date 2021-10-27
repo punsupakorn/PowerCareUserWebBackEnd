@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { createAppointment } = require("../controllers/AppointmentController");
+const {
+  addAppointment,
+} = require("../controllers/AppointmentConfirmController");
 const {
   getUserFromLineUserId,
 } = require("../controllers/AppointmentConfirmController");
@@ -13,13 +15,27 @@ router.post("/token", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const UserID = req.body.UserID;
+  const DoctorID = req.body.DoctorID;
   const DoctorName = req.body.DoctorName;
-  const Symptom = req.body.Symptom;
   const Date = req.body.Date;
   const Time = req.body.Time;
+  const TimeTableID = req.body.TimeTableID;
+  const UserID = req.body.UserID;
+  const UserName = req.body.UserName;
+  const Initial_Symtoms = req.body.Initial_Symtoms;
+  const AccessToken = req.body.AccessToken;
 
-  let result = await createAppointment(UserID, DoctorName, Symptom, Date, Time);
+  let result = await addAppointment(
+    DoctorID,
+    DoctorName,
+    Date,
+    Time,
+    TimeTableID,
+    UserID,
+    UserName,
+    Initial_Symtoms,
+    AccessToken
+  );
   res.send(result);
 });
 

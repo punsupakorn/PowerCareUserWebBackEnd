@@ -8,6 +8,7 @@ var cors = require("cors");
 var userProfileRouter = require("./routes/UserProfileRoute");
 var appointmentRouter = require("./routes/AppointmentRoute");
 var loginRouter = require("./routes/LoginRoute");
+var appointmentConfirmRouter = require("./routes/AppointmentConfirmRoute");
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/UserProfile", userProfileRouter);
 app.use("/Appointment", appointmentRouter);
 app.use("/Login", loginRouter);
+app.use("/AppointmentConfirm", appointmentConfirmRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

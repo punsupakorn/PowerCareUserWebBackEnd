@@ -1,6 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const { createAppointment } = require("../controllers/AppointmentController");
+const {
+  getUserFromLineUserId,
+} = require("../controllers/AppointmentConfirmController");
+
+router.post("/token", async (req, res) => {
+  const accessToken = req.body.accessToken;
+  let result = await getUserFromLineUserId(accessToken);
+  // console.log("result : ", result);
+  res.send(result);
+});
 
 router.post("/", async (req, res) => {
   const UserID = req.body.UserID;

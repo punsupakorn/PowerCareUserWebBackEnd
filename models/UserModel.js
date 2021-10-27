@@ -56,8 +56,25 @@ const checkUser = async (accessToken) => {
   }
 };
 
+const getUserFromLineUserId = async (accessToken) => {
+  const userArr = [];
+  const uid = await axios.get(`https://api.line.me/v2/profile`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const userRef = db.collection("User");
+  const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
+  query.forEach((doc) => {
+    userArr.push(doc.data());
+  });
+  return userArr[0];
+};
+
 /////update/////
 
 /////delete/////
 
-module.exports = { addUser, checkUser };
+module.exports = { addUser, checkUser, getUserFromLineUserId };

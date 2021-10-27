@@ -14,17 +14,17 @@ router.get("/", async (req, res) => {
   res.send(result);
 });
 
-router.get("/doctorname/:date", async (req, res) => {
-  const date = req.params;
-  let result = await getDoctorInChooseDate(date);
+router.post("/name", async (req, res) => {
+  const Date = req.body.Date;
+  let result = await getDoctorInChooseDate(Date);
   // console.log("result : ", result);
   res.send(result);
 });
 
-router.get("/time", async (req, res) => {
-  const TimeTableID = "0d2oeRCaYrfcoKoZ5d8Z";
+router.post("/time", async (req, res) => {
+  const TimeTableID = req.body.TimeTableID;
   let result = await getTimeSlot(TimeTableID);
-  // console.log("result : ", result);
+  console.log("result : ", result);
   res.send(result);
 });
 
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   const Date = req.body.Date;
   const Time = req.body.Time;
 
-  let result = await createAppointment(UserID,DoctorName,Symptom,Date,Time);
+  let result = await createAppointment(UserID, DoctorName, Symptom, Date, Time);
   res.send(result);
 });
 

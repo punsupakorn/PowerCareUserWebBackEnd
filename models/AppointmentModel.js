@@ -1,5 +1,6 @@
 const { db, FieldValue } = require("../config/firebase-config");
 const axios = require("axios");
+const { json } = require("express");
 
 ///// crate /////
 const addAppointment = async (
@@ -13,6 +14,7 @@ const addAppointment = async (
   Initial_Symtoms,
   AccessToken
 ) => {
+  const name = `${UserName.firstname} ${UserName.lastname}`;
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +30,7 @@ const addAppointment = async (
     Time: Time,
     TimeTableID: TimeTableID,
     UserID: UserID,
-    UserName: UserName,
+    UserName: name,
     Intitial_Symptoms: Initial_Symtoms,
     LineUserId: uid.data.userId,
   });

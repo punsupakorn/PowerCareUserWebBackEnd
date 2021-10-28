@@ -74,7 +74,30 @@ const getUserFromLineUserId = async (accessToken) => {
 };
 
 /////update/////
+const editUserProfile = async (
+  UserId,
+  FirstName,
+  LastName,
+  Sex,
+  Address,
+  Phone,
+  Email
+) => {
+  try {
+    const userRef = db.collection("User").doc(UserId);
+    await userRef.update({
+      FirstName: FirstName,
+      LastName: LastName,
+      Sex: Sex,
+      Address: Address,
+      Phone: Phone,
+      Email: Email,
+    });
+  } catch (error) {
+    return error;
+  }
+};
 
 /////delete/////
 
-module.exports = { addUser, checkUser, getUserFromLineUserId };
+module.exports = { addUser, checkUser, getUserFromLineUserId, editUserProfile };

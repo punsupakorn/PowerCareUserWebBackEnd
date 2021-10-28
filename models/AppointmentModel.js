@@ -31,7 +31,7 @@ const addAppointment = async (
     TimeTableID: TimeTableID,
     UserID: UserID,
     UserName: name,
-    Intitial_Symptoms: Initial_Symtoms,
+    Initial_Symptoms: Initial_Symtoms,
     LineUserId: uid.data.userId,
   });
 

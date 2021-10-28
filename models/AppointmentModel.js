@@ -33,6 +33,7 @@ const addAppointment = async (
     UserName: name,
     Initial_Symptoms: Initial_Symtoms,
     LineUserId: uid.data.userId,
+    Status : "ดำเนินการ"
   });
 
   const timetableRef = db.collection("TimeTable").doc(TimeTableID);

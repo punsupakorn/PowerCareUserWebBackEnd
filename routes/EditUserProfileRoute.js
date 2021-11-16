@@ -8,6 +8,7 @@ const {
 router.post("/", async (req, res) => {
   const { accessToken } = req.body;
   let result = await getUserFromLineUserId(accessToken);
+  // console.log(result);
   res.send(result);
 });
 

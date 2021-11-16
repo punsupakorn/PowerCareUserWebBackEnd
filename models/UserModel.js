@@ -64,7 +64,6 @@ const getUserFromLineUserId = async (accessToken) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
   const userRef = db.collection("User");
   const query = await userRef.where("LineUserId", "==", uid.data.userId).get();
   query.forEach((doc) => {

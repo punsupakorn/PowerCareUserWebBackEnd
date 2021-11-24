@@ -34,15 +34,19 @@ const addUser = async (
 
 /////read/////
 const decryptAccessToken = async (accessToken) => {
-  const uid = await axios.get(`https://api.line.me/v2/profile`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  // console.log("uid : ", uid.data.userId);
-  const id = uid.data.userId;
-  return id;
+  try {
+    const uid = await axios.get(`https://api.line.me/v2/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    // console.log("uid : ", uid.data.userId);
+    const id = uid.data.userId;
+    return id;
+  } catch (error) {
+    return false;
+  }
 };
 
 const checkUser = async (accessToken) => {

@@ -5,7 +5,7 @@ const { checkUser } = require("../controllers/UserProfileController");
 router.get("/:accessToken", async (req, res) => {
   const accessToken = req.params;
   let result = await checkUser(accessToken.accessToken);
-  // console.log("result : ", result);
+  console.log("result : ", result);
   res.send(result);
 });
 

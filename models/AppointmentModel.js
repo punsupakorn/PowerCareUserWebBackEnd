@@ -2,7 +2,10 @@ const { db, FieldValue } = require("../config/firebase-config");
 const axios = require("axios");
 const { json } = require("express");
 const { app } = require("firebase-admin");
-const { AppointmentConfirm, client } = require("./../linepushmessage/pushmessage")
+const {
+  AppointmentConfirm,
+  client,
+} = require("./../linepushmessage/pushmessage");
 
 ///// crate /////
 const addAppointment = async (
@@ -23,33 +26,100 @@ const addAppointment = async (
       Authorization: `Bearer ${AccessToken}`,
     },
   });
-  const appointmentRef = db.collection("Appointment").doc();
-  await db.collection("Appointment").doc(appointmentRef.id).set({
-    AppointmentID: appointmentRef.id,
-    DoctorID: DoctorID,
-    DoctorName: DoctorName,
-    Date: Date,
-    Time: Time,
-    TimeTableID: TimeTableID,
-    UserID: UserID,
-    UserName: name,
-    Initial_Symptoms: Initial_Symtoms,
-    LineUserId: uid.data.userId,
-    Status: "ไม่สำเร็จ",
-  });
-  let Status = "รอดำเนินการ";
-  client.pushMessage(uid.data.userId, AppointmentConfirm(name, Initial_Symtoms, Date, Time, DoctorName, Status))
-    .then(() => {
-      console.log('done');
-    })
-    .catch((err) => {
-      // error handling
-      console.log("send message error: ", err);
+  const AppointmentArr = [];
+  const appointmentref = db.collection("Appointment");
+  const query = await appointmentref
+    .where("LineUserId", "==", uid.data.userId)
+    .get();
+  if (query.empty) {
+    const appointmentRef = db.collection("Appointment").doc();
+    await db.collection("Appointment").doc(appointmentRef.id).set({
+      AppointmentID: appointmentRef.id,
+      DoctorID: DoctorID,
+      DoctorName: DoctorName,
+      Date: Date,
+      Time: Time,
+      TimeTableID: TimeTableID,
+      UserID: UserID,
+      UserName: name,
+      Initial_Symptoms: Initial_Symtoms,
+      LineUserId: uid.data.userId,
+      Status: "รอดำเนินการ",
     });
-  const timetableRef = db.collection("TimeTable").doc(TimeTableID);
-  await timetableRef.update({
-    Time: FieldValue.arrayRemove(Time),
-  });
+    let Status = "รอดำเนินการ";
+    client
+      .pushMessage(
+        uid.data.userId,
+        AppointmentConfirm(
+          name,
+          Initial_Symtoms,
+          Date,
+          Time,
+          DoctorName,
+          Status
+        )
+      )
+      .then(() => {
+        console.log("done");
+      })
+      .catch((err) => {
+        // error handling
+        console.log("send message error: ", err);
+      });
+    const timetableRef = db.collection("TimeTable").doc(TimeTableID);
+    await timetableRef.update({
+      Time: FieldValue.arrayRemove(Time),
+    });
+  } else {
+    query.forEach((doc) => {
+      AppointmentArr.push(doc.data());
+    });
+  }
+  const data = !Object.values(AppointmentArr).some(
+    (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
+  );
+  if (data == false) {
+    return "exist";
+  } else {
+    const appointmentRef = db.collection("Appointment").doc();
+    await db.collection("Appointment").doc(appointmentRef.id).set({
+      AppointmentID: appointmentRef.id,
+      DoctorID: DoctorID,
+      DoctorName: DoctorName,
+      Date: Date,
+      Time: Time,
+      TimeTableID: TimeTableID,
+      UserID: UserID,
+      UserName: name,
+      Initial_Symptoms: Initial_Symtoms,
+      LineUserId: uid.data.userId,
+      Status: "รอดำเนินการ",
+    });
+    let Status = "รอดำเนินการ";
+    client
+      .pushMessage(
+        uid.data.userId,
+        AppointmentConfirm(
+          name,
+          Initial_Symtoms,
+          Date,
+          Time,
+          DoctorName,
+          Status
+        )
+      )
+      .then(() => {
+        console.log("done");
+      })
+      .catch((err) => {
+        // error handling
+        console.log("send message error: ", err);
+      });
+    const timetableRef = db.collection("TimeTable").doc(TimeTableID);
+    await timetableRef.update({
+      Time: FieldValue.arrayRemove(Time),
+    });
+  }
 };
 
 ///// read /////

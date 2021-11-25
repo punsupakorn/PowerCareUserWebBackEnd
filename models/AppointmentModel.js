@@ -2,7 +2,7 @@ const { db, FieldValue } = require("../config/firebase-config");
 const axios = require("axios");
 const { json } = require("express");
 const { app } = require("firebase-admin");
-const { message,client } = require("./../linepushmessage/pushmessage")
+const { AppointmentConfirm, client } = require("./../linepushmessage/pushmessage")
 
 ///// crate /////
 const addAppointment = async (
@@ -37,13 +37,14 @@ const addAppointment = async (
     LineUserId: uid.data.userId,
     Status: "ไม่สำเร็จ",
   });
-client.pushMessage(uid.data.userId, message())
+  let Status = "รอดำเนินการ";
+  client.pushMessage(uid.data.userId, AppointmentConfirm(name, Initial_Symtoms, Date, Time, DoctorName, Status))
     .then(() => {
-        console.log('done')
+      console.log('done');
     })
     .catch((err) => {
-        // error handling
-        console.log("send message error: ",err)
+      // error handling
+      console.log("send message error: ", err);
     });
   const timetableRef = db.collection("TimeTable").doc(TimeTableID);
   await timetableRef.update({
@@ -78,4 +79,4 @@ const getAppointmentWithAccessToken = async (accessToken) => {
 
 ///// delete /////
 
-module.exports = { addAppointment,getAppointmentWithAccessToken };
+module.exports = { addAppointment, getAppointmentWithAccessToken };

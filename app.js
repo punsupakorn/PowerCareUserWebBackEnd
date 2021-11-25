@@ -10,6 +10,7 @@ var appointmentRouter = require("./routes/AppointmentRoute");
 var loginRouter = require("./routes/LoginRoute");
 var appointmentConfirmRouter = require("./routes/AppointmentConfirmRoute");
 var editUserProfileRouter = require("./routes/EditUserProfileRoute");
+var postponeRouter = require("./routes/PostponeRoute");
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use("/Appointment", appointmentRouter);
 app.use("/Login", loginRouter);
 app.use("/AppointmentConfirm", appointmentConfirmRouter);
 app.use("/EditUserProfile", editUserProfileRouter);
+app.use("/Postpone", postponeRouter);
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

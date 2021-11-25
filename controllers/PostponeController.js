@@ -1,7 +1,3 @@
 const { getUserFromLineUserId } = require("../models/UserModel");
-
-const Postpone = () => {
-
-}
-
-
+const { getAppointmentWithAccessToken } = require("../models/AppointmentModel");
+module.exports = { getAppointmentWithAccessToken };

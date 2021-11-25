@@ -1,6 +1,8 @@
 const { db, FieldValue } = require("../config/firebase-config");
 const axios = require("axios");
 const { json } = require("express");
+const { app } = require("firebase-admin");
+const { message,client } = require("./../linepushmessage/pushmessage")
 
 ///// crate /////
 const addAppointment = async (
@@ -33,9 +35,16 @@ const addAppointment = async (
     UserName: name,
     Initial_Symptoms: Initial_Symtoms,
     LineUserId: uid.data.userId,
-    Status : "ไม่สำเร็จ"
+    Status: "ไม่สำเร็จ",
   });
-
+client.pushMessage(uid.data.userId, message())
+    .then(() => {
+        console.log('done')
+    })
+    .catch((err) => {
+        // error handling
+        console.log("send message error: ",err)
+    });
   const timetableRef = db.collection("TimeTable").doc(TimeTableID);
   await timetableRef.update({
     Time: FieldValue.arrayRemove(Time),
@@ -43,9 +52,30 @@ const addAppointment = async (
 };
 
 ///// read /////
+const getAppointmentWithAccessToken = async (accessToken) => {
+  try {
+    const arr = [];
+    const uid = await axios.get(`https://api.line.me/v2/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const appointmentRef = db.collection("Appointment");
+    const query = await appointmentRef
+      .where("LineUserId", "==", uid.data.userId)
+      .get();
+    query.forEach((doc) => {
+      arr.push(doc.data());
+    });
+    return arr[0];
+  } catch (error) {
+    return false;
+  }
+};
 
 ///// update /////
 
 ///// delete /////
 
-module.exports = { addAppointment };
+module.exports = { addAppointment,getAppointmentWithAccessToken };

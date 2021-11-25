@@ -149,8 +149,61 @@ const getAppointmentWithAccessToken = async (accessToken) => {
   }
 };
 
+const getAllAppointment = async () => {
+  try {
+    const appointment = db.collection("Appointment");
+    const snapshot = await appointment.get();
+    const arr = [];
+    // const User = [];
+    // const Doctor = [];
+    snapshot.forEach((doc) => {
+      arr.push(doc.data());
+    });
+    // for (let i = 0; i < arr.length; i++) {
+    //   const element = arr[i];
+    //   const userRef = await db.collection("User").doc(element.UserID).get();
+    //   User.push(userRef.data());
+    //   const DoctorRef = await db
+    //     .collection("Doctor")
+    //     .doc(element.DoctorID)
+    //     .get();
+    //   Doctor.push(DoctorRef.data());
+    // }
+    // return { arr, User, Doctor };
+    return arr;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getDateChange = async (DoctorID) => {
+  try {
+    const DateArr = [];
+    const timetableRef = db.collection("TimeTable");
+    const query = await timetableRef.where("DoctorID", "==", DoctorID).get();
+
+    query.forEach((doc) => {
+      const data = doc.data();
+      const date = data.Date;
+      const id = data.TimeTableID;
+      DateArr.sort().push({ Date: date, TimeTableID: id });
+    });
+
+    const filter = [...new Set(DateArr)];
+    return filter;
+  } catch (error) {
+    return error;
+  }
+};
+
 ///// update /////
 
 ///// delete /////
 
-module.exports = { addAppointment, getAppointmentWithAccessToken };
+module.exports = {
+  addAppointment,
+  getAppointmentWithAccessToken,
+  getAllAppointment,
+  getDateChange,
+};

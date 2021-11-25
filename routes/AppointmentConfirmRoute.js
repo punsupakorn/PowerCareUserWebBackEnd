@@ -12,7 +12,7 @@ router.post("/token", async (req, res) => {
   console.log("route: ",accessToken);
   let result = await getUserFromLineUserId(accessToken);
   // console.log("result : ", result);
-  res.json({result});
+  res.send(result);
 });
 
 router.post("/", async (req, res) => {

@@ -139,7 +139,11 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     query.forEach((doc) => {
       arr.push(doc.data());
     });
-    return arr[0];
+    if (arr[0] == undefined) {
+      return "empty";
+    } else {
+      return arr[0];
+    }
   } catch (error) {
     return false;
   }

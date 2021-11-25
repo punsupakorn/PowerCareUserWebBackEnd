@@ -77,7 +77,10 @@ const getUserFromLineUserId = async (accessToken) => {
       userArr.push(doc.data());
     });
     return userArr[0];
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
 
 /////update/////

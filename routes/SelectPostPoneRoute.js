@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getAllAppointment,
   getDateChange,
+  getTime,
 } = require("../controllers/SelectPostponeController");
 
 router.get("/date/:doctorid", async (req, res) => {
@@ -12,4 +13,9 @@ router.get("/date/:doctorid", async (req, res) => {
   res.send(result);
 });
 
+router.get("/time/:timetableid", async (req, res) => {
+  const { timetableid } = req.params;
+  let result = await getTime(timetableid);
+  res.send(result);
+});
 module.exports = router;

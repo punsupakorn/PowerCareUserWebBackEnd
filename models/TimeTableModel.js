@@ -68,9 +68,23 @@ const getTimeSlot = async (TimeTableID) => {
   } catch (error) {}
 };
 
+const getTime = async (TimeTableID) => {
+  try {
+    // const TimeArr = [];
+    const timetableRef = db.collection("TimeTable").doc(TimeTableID);
+    const doc = await timetableRef.get();
+    const data = doc.data();
+    const time = data.Time;
+    return time.sort();
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getTimeTable,
   getDateInTimeTable,
   getDoctorInChooseDate,
   getTimeSlot,
+  getTime,
 };

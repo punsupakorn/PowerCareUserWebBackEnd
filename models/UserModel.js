@@ -62,6 +62,7 @@ const checkUser = async (accessToken) => {
 
 const getUserFromLineUserId = async (accessToken) => {
   try {
+    console.log("Model: ",accessToken)
     const userArr = [];
     const uid = await axios.get(`https://api.line.me/v2/profile`, {
       headers: {
@@ -78,8 +79,8 @@ const getUserFromLineUserId = async (accessToken) => {
     });
     return userArr[0];
   } catch (error) {
-    console.log(error);
-    return error;
+    // console.log(error);
+    //return error;
   }
 };
 

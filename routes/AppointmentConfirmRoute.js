@@ -9,10 +9,10 @@ const {
 
 router.post("/token", async (req, res) => {
   const accessToken = req.body.accessToken;
-  // console.log(accessToken);
+  console.log("route: ",accessToken);
   let result = await getUserFromLineUserId(accessToken);
-  console.log("result : ", result);
-  res.send(result);
+  // console.log("result : ", result);
+  res.json({result});
 });
 
 router.post("/", async (req, res) => {

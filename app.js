@@ -13,6 +13,7 @@ var editUserProfileRouter = require("./routes/EditUserProfileRoute");
 var postponeRouter = require("./routes/PostponeRoute");
 var postponeSelectRouter = require("./routes/SelectPostPoneRoute");
 var postponeConfirmRouter = require("./routes/PostponeConfirmRoute");
+var cancelRouterRouter = require("./routes/CancelRoute");
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/EditUserProfile", editUserProfileRouter);
 app.use("/Postpone", postponeRouter);
 app.use("/PostponeSelect", postponeSelectRouter);
 app.use("/PostponeConfirm", postponeConfirmRouter);
+app.use("/Cancel", cancelRouterRouter);
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

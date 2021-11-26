@@ -19,7 +19,6 @@ router.put("/", async (req, res) => {
     OldTime,
     NewTime
   );
-
   res.send(result);
 });
 

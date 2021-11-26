@@ -231,11 +231,22 @@ const editAppointment = async (
 };
 
 ///// delete /////
+const deleteAppointment = async (AppointmentID, TimeTableID, Time) => {
+  try {
+    await db.collection("Appointment").doc(AppointmentID).delete();
+    const timtableRef = db.collection("TimeTable").doc(TimeTableID);
+    await timtableRef.update({ Time: FieldValue.arrayUnion(Time) });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 module.exports = {
   addAppointment,
   getAppointmentWithAccessToken,
   getAllAppointment,
   getDateChange,
-  editAppointment
+  editAppointment,
+  deleteAppointment,
 };

@@ -209,8 +209,15 @@ const editAppointment = async (
   olddate,
   doctorname,
   symptom,
-  username
+  username,
+  accessToken
 ) => {
+  const uid = await axios.get(`https://api.line.me/v2/profile`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   const appointmentRef = db.collection("Appointment").doc(AppointmentID);
   const oldtimetableRef = db.collection("TimeTable").doc(OldTimeTableID);
   const newtimetableRef = db.collection("TimeTable").doc(NewTimeTableID);

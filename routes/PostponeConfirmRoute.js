@@ -14,6 +14,7 @@ router.post("/", async (req, res) => {
     doctorname,
     symptom,
     username,
+    accessToken,
   } = req.body;
   let result = await editAppointment(
     AppointmentID,
@@ -26,6 +27,7 @@ router.post("/", async (req, res) => {
     doctorname,
     symptom,
     username,
+    accessToken
   );
   res.send(result);
 });

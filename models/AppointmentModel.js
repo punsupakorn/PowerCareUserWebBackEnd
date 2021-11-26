@@ -204,7 +204,11 @@ const editAppointment = async (
   NewTimeTableID,
   Date,
   OldTime,
-  NewTime
+  NewTime,
+  olddate,
+  doctorname,
+  symptom,
+  username,
 ) => {
   const appointmentRef = db.collection("Appointment").doc(AppointmentID);
   const oldtimetableRef = db.collection("TimeTable").doc(OldTimeTableID);

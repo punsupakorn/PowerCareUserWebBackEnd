@@ -198,6 +198,33 @@ const getDateChange = async (DoctorID) => {
 };
 
 ///// update /////
+const editAppointment = async (
+  AppointmentID,
+  OldTimeTableID,
+  NewTimeTableID,
+  Date,
+  OldTime,
+  NewTime
+) => {
+  const appointmentRef = db.collection("Appointment").doc(AppointmentID);
+  const oldtimetableRef = db.collection("TimeTable").doc(OldTimeTableID);
+  const newtimetableRef = db.collection("TimeTable").doc(NewTimeTableID);
+  try {
+    await appointmentRef.update({
+      Time: NewTime,
+      Date: Date,
+      TimeTableID: NewTimeTableID,
+    });
+
+    await newtimetableRef.update({
+      Time: FieldValue.arrayRemove(NewTime),
+    });
+
+    await oldtimetableRef.update({ Time: FieldValue.arrayUnion(OldTime) });
+  } catch (error) {
+    return error;
+  }
+};
 
 ///// delete /////
 
@@ -206,4 +233,5 @@ module.exports = {
   getAppointmentWithAccessToken,
   getAllAppointment,
   getDateChange,
+  editAppointment
 };

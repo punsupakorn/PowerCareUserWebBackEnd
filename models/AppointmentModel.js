@@ -3,7 +3,8 @@ const axios = require("axios");
 const { json } = require("express");
 const { app } = require("firebase-admin");
 const {
-  AppointmentConfirm,PostponeAppointmentConfirm,
+  AppointmentConfirm,
+  PostponeAppointmentConfirm,
   client,
 } = require("./../linepushmessage/pushmessage");
 
@@ -208,7 +209,7 @@ const editAppointment = async (
   olddate,
   doctorname,
   symptom,
-  username,
+  username
 ) => {
   const appointmentRef = db.collection("Appointment").doc(AppointmentID);
   const oldtimetableRef = db.collection("TimeTable").doc(OldTimeTableID);
@@ -225,24 +226,32 @@ const editAppointment = async (
     });
 
     await oldtimetableRef.update({ Time: FieldValue.arrayUnion(OldTime) });
+
+    let status = "เลื่อนนัดสำเร็จ";
+    client
+      .pushMessage(
+        uid.data.userId,
+        PostponeAppointmentConfirm(
+          username,
+          symptom,
+          Date,
+          OldTime,
+          NewTime,
+          olddate,
+          doctorname,
+          status
+        )
+      )
+      .then(() => {
+        console.log("done");
+      })
+      .catch((err) => {
+        // error handling
+        console.log("send message error: ", err);
+      });
   } catch (error) {
     return error;
   }
-  let status = "เลื่อนนัดสำเร็จ";
-  client
-    .pushMessage(
-      uid.data.userId,
-      PostponeAppointmentConfirm(
-        username, symptom, Date, OldTime, NewTime, olddate, doctorname, status
-      )
-    )
-    .then(() => {
-      console.log("done");
-    })
-    .catch((err) => {
-      // error handling
-      console.log("send message error: ", err);
-    });
 };
 
 ///// delete /////

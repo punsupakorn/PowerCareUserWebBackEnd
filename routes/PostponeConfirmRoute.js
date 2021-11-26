@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { editAppointment } = require("../controllers/PostponeConfirmController");
 
-router.put("/", async (req, res) => {
+router.post("/", async (req, res) => {
   const {
     AppointmentID,
     OldTimeTableID,

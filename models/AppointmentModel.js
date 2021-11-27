@@ -8,6 +8,16 @@ const {
   client,
 } = require("./../linepushmessage/pushmessage");
 
+const displayShortThaiDate = (date) => {
+  const result = new Date(date).toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "2-digit",
+    day: "numeric",
+    // weekday: "short",
+  });
+  return result;
+};
+
 ///// crate /////
 const addAppointment = async (
   DoctorID,
@@ -212,6 +222,8 @@ const editAppointment = async (
   username,
   accessToken
 ) => {
+  const oldthaidate = displayShortThaiDate(olddate);
+  const newthaidate = displayShortThaiDate(Date);
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
       "Content-Type": "application/json",
@@ -241,10 +253,10 @@ const editAppointment = async (
         PostponeAppointmentConfirm(
           username,
           symptom,
-          Date,
+          newthaidate,
           OldTime,
           NewTime,
-          olddate,
+          oldthaidate,
           doctorname,
           status
         )

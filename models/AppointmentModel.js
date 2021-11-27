@@ -329,7 +329,7 @@ const deleteAppointment = async (AppointmentID, TimeTableID, Time) => {
   const date = displayShortThaiDate(user.Date);
   const time = user.Time;
   const doctorname = user.DoctorName;
-  const status = "ยกเลิกนัด";
+  const status = "ยกเลิกนัดสำเร็จ";
   try {
     await db.collection("Appointment").doc(AppointmentID).delete();
     const timtableRef = db.collection("TimeTable").doc(TimeTableID);

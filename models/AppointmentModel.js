@@ -5,6 +5,7 @@ const { app } = require("firebase-admin");
 const {
   AppointmentConfirm,
   PostponeAppointmentConfirm,
+  CancelAppointment,
   client,
 } = require("./../linepushmessage/pushmessage");
 
@@ -30,6 +31,7 @@ const addAppointment = async (
   Initial_Symtoms,
   AccessToken
 ) => {
+  const thaidate = displayShortThaiDate(Date);
   const name = `${UserName.firstname} ${UserName.lastname}`;
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
@@ -64,7 +66,7 @@ const addAppointment = async (
         AppointmentConfirm(
           name,
           Initial_Symtoms,
-          Date,
+          thaidate,
           Time,
           DoctorName,
           Status
@@ -247,7 +249,7 @@ const editAppointment = async (
     await oldtimetableRef.update({ Time: FieldValue.arrayUnion(OldTime) });
 
     let status = "เลื่อนนัดสำเร็จ";
-    client
+    await client
       .pushMessage(
         uid.data.userId,
         PostponeAppointmentConfirm(
@@ -275,10 +277,24 @@ const editAppointment = async (
 
 ///// delete /////
 const deleteAppointment = async (AppointmentID, TimeTableID, Time) => {
+  const appointmentRef = db.collection("Appointment").doc(AppointmentID);
+  const doc = await appointmentRef.get();
+  const user = doc.data();
+  const username = user.UserName;
+  const lineid = user.LineUserId;
+  const symptom = user.Initial_Symptoms;
+  const date = displayShortThaiDate(user.Date);
+  const time = user.Time;
+  const doctorname = user.DoctorName;
+  const status = "ยกเลิกนัด";
   try {
     await db.collection("Appointment").doc(AppointmentID).delete();
     const timtableRef = db.collection("TimeTable").doc(TimeTableID);
     await timtableRef.update({ Time: FieldValue.arrayUnion(Time) });
+    await client.pushMessage(
+      lineid,
+      CancelAppointment(username, symptom, date, time, doctorname, status)
+    );
   } catch (error) {
     console.log(error);
     return error;

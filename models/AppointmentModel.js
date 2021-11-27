@@ -20,16 +20,6 @@ const addAppointment = async (
   Initial_Symtoms,
   AccessToken
 ) => {
-  const displayShortThaiDate = (date) => {
-    const result = new Date(date).toLocaleDateString("th-TH", {
-      year: "numeric",
-      month: "2-digit",
-      day: "numeric",
-      // weekday: "short",
-    });
-    return result;
-  };
-  const thaidate = displayShortThaiDate(Date);
   const name = `${UserName.firstname} ${UserName.lastname}`;
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
@@ -64,7 +54,7 @@ const addAppointment = async (
         AppointmentConfirm(
           name,
           Initial_Symtoms,
-          thaidate,
+          Date,
           Time,
           DoctorName,
           Status
@@ -222,17 +212,6 @@ const editAppointment = async (
   username,
   accessToken
 ) => {
-  const displayShortThaiDate = (date) => {
-    const result = new Date(date).toLocaleDateString("th-TH", {
-      year: "numeric",
-      month: "2-digit",
-      day: "numeric",
-      // weekday: "short",
-    });
-    return result;
-  };
-  const thaidate = displayShortThaiDate(Date);
-  const oldthaidate = displayShortThaiDate(olddate);
   const uid = await axios.get(`https://api.line.me/v2/profile`, {
     headers: {
       "Content-Type": "application/json",
@@ -262,10 +241,10 @@ const editAppointment = async (
         PostponeAppointmentConfirm(
           username,
           symptom,
-          thaidate,
+          Date,
           OldTime,
           NewTime,
-          oldthaidate,
+          olddate,
           doctorname,
           status
         )

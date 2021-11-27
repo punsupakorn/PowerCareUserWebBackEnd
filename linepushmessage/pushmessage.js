@@ -444,7 +444,7 @@ const CancelAppointment = (userName, initial_Symptoms, date, time, doctorName, s
   return [
     {
           type: "flex",
-          altText: "คำขอเลื่อนนัดสำเร็จ",
+          altText: "คำขอยกเลิดนัด",
           contents: {
             "type": "bubble",
             "direction": "ltr",
@@ -624,6 +624,8 @@ const CancelAppointment = (userName, initial_Symptoms, date, time, doctorName, s
         }
   ]
 };
+
+
 
 
 // console.log("start")

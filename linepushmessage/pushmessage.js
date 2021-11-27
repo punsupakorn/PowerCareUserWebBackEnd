@@ -444,7 +444,7 @@ const CancelAppointment = (userName, initial_Symptoms, date, time, doctorName, s
   return [
     {
           type: "flex",
-          altText: "คำขอยกเลิดนัด",
+          altText: "คำขอยกเลิกนัด",
           contents: {
             "type": "bubble",
             "direction": "ltr",

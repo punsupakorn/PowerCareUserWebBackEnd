@@ -20,6 +20,35 @@ const displayShortThaiDate = (date) => {
 };
 
 ///// crate /////
+const checkeExistAppoitment = async (AccessToken) => {
+  const uid = await axios.get(`https://api.line.me/v2/profile`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${AccessToken}`,
+    },
+  });
+
+  const AppointmentArr = [];
+  const appointmentref = db.collection("Appointment");
+  const query = await appointmentref
+    .where("LineUserId", "==", uid.data.userId)
+    .get();
+  if (query.empty) {
+    return true;
+  } else {
+    query.forEach((doc) => {
+      AppointmentArr.push(doc.data());
+    });
+    const data = !Object.values(AppointmentArr).some(
+      (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
+    );
+    if (data == false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+};
 const addAppointment = async (
   DoctorID,
   DoctorName,
@@ -351,4 +380,5 @@ module.exports = {
   getDateChange,
   editAppointment,
   deleteAppointment,
+  checkeExistAppoitment,
 };

@@ -119,48 +119,48 @@ const addAppointment = async (
     const data = !Object.values(AppointmentArr).some(
       (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
     );
-    // if (data == false) {
-    //   return "exist";
-    // } else {
-    //   const appointmentRef = db.collection("Appointment").doc();
-    //   await db.collection("Appointment").doc(appointmentRef.id).set({
-    //     AppointmentID: appointmentRef.id,
-    //     DoctorID: DoctorID,
-    //     DoctorName: DoctorName,
-    //     Date: Date,
-    //     Time: Time,
-    //     TimeTableID: TimeTableID,
-    //     UserID: UserID,
-    //     UserName: name,
-    //     Initial_Symptoms: Initial_Symtoms,
-    //     LineUserId: uid.data.userId,
-    //     Status: "รอดำเนินการ",
-    //   });
-    //   let Status = "รอดำเนินการ";
-    //   client
-    //     .pushMessage(
-    //       uid.data.userId,
-    //       AppointmentConfirm(
-    //         name,
-    //         Initial_Symtoms,
-    //         thaidate,
-    //         Time,
-    //         DoctorName,
-    //         Status
-    //       )
-    //     )
-    //     .then(() => {
-    //       console.log("done");
-    //     })
-    //     .catch((err) => {
-    //       // error handling
-    //       console.log("send message error: ", err);
-    //     });
-    //   const timetableRef = db.collection("TimeTable").doc(TimeTableID);
-    //   await timetableRef.update({
-    //     Time: FieldValue.arrayRemove(Time),
-    //   });
-    // }
+    if (data == false) {
+      return "exist";
+    } else {
+      const appointmentRef = db.collection("Appointment").doc();
+      await db.collection("Appointment").doc(appointmentRef.id).set({
+        AppointmentID: appointmentRef.id,
+        DoctorID: DoctorID,
+        DoctorName: DoctorName,
+        Date: Date,
+        Time: Time,
+        TimeTableID: TimeTableID,
+        UserID: UserID,
+        UserName: name,
+        Initial_Symptoms: Initial_Symtoms,
+        LineUserId: uid.data.userId,
+        Status: "รอดำเนินการ",
+      });
+      let Status = "รอดำเนินการ";
+      client
+        .pushMessage(
+          uid.data.userId,
+          AppointmentConfirm(
+            name,
+            Initial_Symtoms,
+            thaidate,
+            Time,
+            DoctorName,
+            Status
+          )
+        )
+        .then(() => {
+          console.log("done");
+        })
+        .catch((err) => {
+          // error handling
+          console.log("send message error: ", err);
+        });
+      const timetableRef = db.collection("TimeTable").doc(TimeTableID);
+      await timetableRef.update({
+        Time: FieldValue.arrayRemove(Time),
+      });
+    }
   }
 
   // if (data == false) {

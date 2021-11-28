@@ -234,8 +234,10 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     if (arr[0] == undefined) {
       return "empty";
     } else if (check !== undefined) {
-      return check;
-    } 
+      arr.push(check);
+      return arr[0];
+      // return check;
+    }
   } catch (error) {
     return false;
   }

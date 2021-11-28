@@ -8,6 +8,7 @@ const {
   CancelAppointment,
   client,
 } = require("./../linepushmessage/pushmessage");
+const e = require("express");
 
 const displayShortThaiDate = (date) => {
   const result = new Date(date).toLocaleDateString("th-TH", {
@@ -214,7 +215,6 @@ const addAppointment = async (
 const getAppointmentWithAccessToken = async (accessToken) => {
   try {
     const arr = [];
-    const resultarr = [];
     const uid = await axios.get(`https://api.line.me/v2/profile`, {
       headers: {
         "Content-Type": "application/json",
@@ -225,19 +225,19 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     const query = await appointmentRef
       .where("LineUserId", "==", uid.data.userId)
       .get();
-    const checkoperation = arr.filter((data) => data.Status == "รอดำเนินการ");
-    const checkwaitdoctor = arr.filter((data) => data.Status == "รอพบแพทย์");
     query.forEach((doc) => {
       arr.push(doc.data());
     });
     if (arr[0] == undefined) {
       return "empty";
-    } else if (checkwaitdoctor !== null) {
-      return "wait";
     } else {
-      return checkoperation;
-      // resultarr.push(checkoperation);
-      // return resultarr[0];
+      const check = arr.find((data) => data.Status == "รอพบแพทย์");
+      if (check !== undefined) {
+        return "wait";
+      } else {
+        const operation = arr.find((data) => data.Status == "ดำเนินการ");
+        return operation;
+      }
     }
   } catch (error) {
     return false;

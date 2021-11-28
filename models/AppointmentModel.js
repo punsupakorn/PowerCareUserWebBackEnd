@@ -228,7 +228,8 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     query.forEach((doc) => {
       arr.push(doc.data());
     });
-    if (arr[0] == undefined) {
+    const res = Object.values(arr).every((data) => data.Status == "สำเร็จ");
+    if (arr[0] == undefined || res == true) {
       return "empty";
     } else {
       const check = arr.find((data) => data.Status == "รอพบแพทย์");

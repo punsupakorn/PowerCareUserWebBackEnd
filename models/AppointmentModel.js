@@ -39,8 +39,11 @@ const checkeExistAppoitment = async (AccessToken) => {
     query.forEach((doc) => {
       AppointmentArr.push(doc.data());
     });
+    // const data = !Object.values(AppointmentArr).some(
+    //   (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
+    // );
     const data = !Object.values(AppointmentArr).some(
-      (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
+      (data) => data.Status !== "สำเร็จ"
     );
     if (data == false) {
       return false;

@@ -214,6 +214,7 @@ const addAppointment = async (
 const getAppointmentWithAccessToken = async (accessToken) => {
   try {
     const arr = [];
+    const resultarr = [];
     const uid = await axios.get(`https://api.line.me/v2/profile`, {
       headers: {
         "Content-Type": "application/json",
@@ -224,19 +225,18 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     const query = await appointmentRef
       .where("LineUserId", "==", uid.data.userId)
       .get();
-    const check = arr.find(
-      (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
-    );
-    // const checkwaitdoctor = arr.find((data) => data.Status == "รอพบแพทย์");
+    const checkoperation = arr.find((data) => data.Status == "รอดำเนินการ");
+    const checkwaitdoctor = arr.find((data) => data.Status == "รอพบแพทย์");
     query.forEach((doc) => {
       arr.push(doc.data());
     });
     if (arr[0] == undefined) {
       return "empty";
-    } else if (check !== undefined) {
-      arr.push(check);
-      return arr[0];
-      // return check;
+    } else if (checkwaitdoctor !== undefined) {
+      return "wait";
+    } else {
+      resultarr.push(checkoperation);
+      return resultarr[0];
     }
   } catch (error) {
     return false;

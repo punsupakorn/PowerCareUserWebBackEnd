@@ -225,18 +225,19 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     const query = await appointmentRef
       .where("LineUserId", "==", uid.data.userId)
       .get();
-    const checkoperation = arr.find((data) => data.Status == "รอดำเนินการ");
-    const checkwaitdoctor = arr.find((data) => data.Status == "รอพบแพทย์");
+    const checkoperation = arr.filter((data) => data.Status == "รอดำเนินการ");
+    const checkwaitdoctor = arr.filter((data) => data.Status == "รอพบแพทย์");
     query.forEach((doc) => {
       arr.push(doc.data());
     });
     if (arr[0] == undefined) {
       return "empty";
-    } else if (checkwaitdoctor !== undefined) {
+    } else if (checkwaitdoctor !== null) {
       return "wait";
     } else {
-      resultarr.push(checkoperation);
-      return resultarr[0];
+      return checkoperation;
+      // resultarr.push(checkoperation);
+      // return resultarr[0];
     }
   } catch (error) {
     return false;

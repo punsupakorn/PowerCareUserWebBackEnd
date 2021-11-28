@@ -14,7 +14,7 @@ router.get("/user/:accesstoken", async (req, res) => {
 router.get("/:accesstoken", async (req, res) => {
   const { accesstoken } = req.params;
   let result = await getAppointmentWithAccessToken(accesstoken);
-  // console.log(result)
+  console.log(result)
   res.send(result);
 });
 

@@ -235,8 +235,9 @@ const getAppointmentWithAccessToken = async (accessToken) => {
       if (check !== undefined) {
         return "wait";
       } else {
-        const operation = arr.find((data) => data.Status == "ดำเนินการ");
-        return operation;
+        return arr.find((data) => data.Status == "รอดำเนินการ");
+        // const operation = arr.find((data) => data.Status == "ดำเนินการ");
+        // return operation;
       }
     }
   } catch (error) {

@@ -224,13 +224,19 @@ const getAppointmentWithAccessToken = async (accessToken) => {
     const query = await appointmentRef
       .where("LineUserId", "==", uid.data.userId)
       .get();
+    const check = arr.find(
+      (data) => data.Status == "รอดำเนินการ" || data.Status == "รอพบแพทย์"
+    );
+    // const checkwaitdoctor = arr.find((data) => data.Status == "รอพบแพทย์");
     query.forEach((doc) => {
       arr.push(doc.data());
     });
     if (arr[0] == undefined) {
       return "empty";
+    } else if (check !== undefined) {
+      return check;
     } else {
-      return arr[0];
+      return "empty";
     }
   } catch (error) {
     return false;
